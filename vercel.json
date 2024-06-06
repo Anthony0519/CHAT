@@ -8,7 +8,7 @@
     ],
     "headers": [
       {
-        "source": "/api/chat(.*)",
+        "source": "/(.*)",
         "headers": [
           {
             "key": "Access-Control-Allow-Origin",

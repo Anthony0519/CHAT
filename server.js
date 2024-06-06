@@ -1,5 +1,5 @@
 const express = require("express")
-const {dbConnect} = require("./config/dbConfig")
+require("./config/dbConfig")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const userRouter = require("./router/userRouter")
@@ -12,12 +12,12 @@ const port = process.env.port
 const app = express()
 app.use(express.json())
 app.use(cors())
-app.use("/api/chat",userRouter)
-app.use("/api/chat",requestRouter)
+app.use(userRouter)
+app.use(requestRouter)
 
-dbConnect().then().catch((error)=>{
-    console.log(`database connection failed: ${error.message}`)
-})
+// dbConnect().then().catch((error)=>{
+//     console.log(`database connection failed: ${error.message}`)
+// })
 
 const server = app.listen(port,()=>{
     console.log(`server on port: ${port}`);
