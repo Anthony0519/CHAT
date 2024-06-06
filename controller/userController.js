@@ -158,7 +158,7 @@ exports.getAllFriends = async(req,res)=>{
         const {userId} = req.user
         // fetch the user from the database
         const user = await userModel.findById(userId).populate("friends")
-        console.log(user.friends)
+        // console.log(user.friends)
         
         // map out thne user friends details from the friends array
         const friends = user.friends.map(friend => ({
@@ -179,17 +179,17 @@ exports.getAllFriends = async(req,res)=>{
     }
 }
 
-exports.deleteAccount = async(req,res)=>{
+exports.deleteAccount = async(req,res)=>{ 
     try{
 
         // get the user's id
         const {userId} = req.user
 
         // check if the user has any pending request
-        const pendingReq = await requestModel.find().where("from").equals(`${userId}`)
+        // const pendingReq = await requestModel.find().where("from").equals(`${userId}`)
 
         // delete any pendin request
-        await pendingReq.deleteMany({from:userId, status:"pending"})
+        await requestModel.deleteMany({from:userId, status:"pending"})
 
         // find the user and delete
         await userModel.findByIdAndDelete(userId)
@@ -236,11 +236,16 @@ exports.blockAndUnblockFriend = async(req,res)=>{
             })
         }
 
+        // console.log(friendId)
+        // console.log(user.blockedFriends)   
+
         // unblock the user
-        user.blockedFriends.filter(id=>id.toString() === friendId.toString())
-        await user.save()
-        // console.log(filter)
-        console.log("blocked friends unblocked" + user.blockedFriends)
+       const block = user.blockedFriends.filter(id=>id.toString() != friendId.toString())
+    //    console.log('Blocked:', block)
+    
+    //   update the filtered friends
+       user.blockedFriends = block;
+       await user.save()    
 
         res.status(200).json({
             message:"user unblocked",
