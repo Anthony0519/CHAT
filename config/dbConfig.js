@@ -2,10 +2,7 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 const dbConnect = async ()=>{
     try {
-       await mongoose.connect(
-        process.env.DBLink,
-
-    )
+       await mongoose.connect(process.env.DBLink)
        
         console.log("Database Connected")
 
